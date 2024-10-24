@@ -6,8 +6,9 @@ import 'package:media_care/models/location.dart';
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit() : super(const HomeState());
+  HomeCubit() : super(HomeState());
 
+// GETTING ALL HOSPITALS AND CLINICS
   Future<void> gettingFacilities() async {
     try {
       emit(state.copyWith(isgettingFacilities: true));
@@ -21,14 +22,16 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
+// FILTERING CLINICS AND HOSPITALS
   Future<void> filterByLocation({required FacilityLocation location}) async {
     try {
       emit(state.copyWith(isgettingFacilities: true));
 
-      await Future.delayed(const Duration(seconds: 2));
       final FacilityLocation selectedLocation = FacilityLocation.locations
           .firstWhere((element) => element.name == location.name);
       selectedLocation.isSelected == true;
+      emit(state.copyWith(selectedLocation: selectedLocation));
+      await Future.delayed(const Duration(seconds: 2));
 
       final List<Facility> fetchedFacilities = Facility.facilities
           .where((element) => element.location == location.name)
@@ -40,5 +43,13 @@ class HomeCubit extends Cubit<HomeState> {
 
       throw Exception(e);
     }
+  }
+
+  // SELECT  SINGLE CLINIC OR HOSPITAL
+  selectFacility({required Facility facility}) {
+    final Facility selectedFacility = Facility.facilities
+        .firstWhere((element) => element.name == facility.name);
+
+    emit(state.copyWith(selectedFacility: selectedFacility));
   }
 }

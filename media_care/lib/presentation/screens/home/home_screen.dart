@@ -25,7 +25,10 @@ class HomeScreen extends StatelessWidget {
               automaticallyImplyLeading: false,
               centerTitle: true,
               actions: <Widget>[Container()],
-              title: const Text("Choose Facility"),
+              title: const Text(
+                "Choose Facility",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
             const FilteringHeader(),
           ],
@@ -39,12 +42,34 @@ class HomeScreen extends StatelessWidget {
                 ? const Center(
                     child: CircularProgressIndicator(),
                   )
-                : ListView.builder(
-                    itemCount: state.facilities.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) => HospitalClinicItemWidget(
-                          facility: state.facilities[index],
-                        )),
+                : state.facilities.isEmpty
+                    ? const SizedBox(
+                        width: double.infinity,
+                        height: 400,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.nearby_error_rounded,
+                              size: 40,
+                            ),
+                            Text(
+                              'EMPTY',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                            Text('There are no hospital or clinic yet'),
+                          ],
+                        ),
+                      )
+                    : ListView.builder(
+                        itemCount: state.facilities.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) =>
+                            HospitalClinicItemWidget(
+                              facility: state.facilities[index],
+                            )),
           );
         },
       ),

@@ -5,7 +5,7 @@ class FacilityLocation {
   final String name;
   final bool isSelected;
 
-  FacilityLocation({
+  const FacilityLocation({
     required this.id,
     required this.name,
     required this.isSelected,
@@ -18,4 +18,7 @@ class FacilityLocation {
     FacilityLocation(
         id: const Uuid().v4(), name: "Sierra Leone", isSelected: false),
   ];
+
+  static FacilityLocation empty =
+      FacilityLocation(id: const Uuid().v4(), name: "", isSelected: false);
 }
