@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:media_care/presentation/screens/hospitals_clinics/cubit/home_cubit.dart';
-import 'package:media_care/presentation/widgets/custom_drawer.dart';
+import 'package:media_care/presentation/screens/pharmacies/cubit/pharmacies_cubit.dart';
+import 'package:media_care/presentation/widgets/f_custom_drawer.dart';
 import 'package:media_care/presentation/widgets/filtering_header.dart';
-import 'package:media_care/presentation/widgets/hospital_clinic_item_widget.dart';
+import 'package:media_care/presentation/widgets/pharmacy_item_widget.dart';
 
-class HospitalsCrinicsScreen extends StatelessWidget {
-  static const routeName = "/hospitals_clinics";
-  const HospitalsCrinicsScreen({super.key});
+class PharmaciesScreen extends StatelessWidget {
+  static const routeName = "/pharmacies";
+  const PharmaciesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    context.read<HomeCubit>().gettingFacilities();
+    context.read<PharmaciesCubit>().gettingPharmacies();
     return Scaffold(
       endDrawer: const Drawer(
-        child: CustomDrawer(
-          title: "Filter(Hospitals/Clinics)",
+        child: FCustomDrawer(
+          title: "Filter(Pharmacies)",
         ),
       ),
       appBar: PreferredSize(
@@ -37,20 +37,19 @@ class HospitalsCrinicsScreen extends StatelessWidget {
               ),
             ),
             const FilteringHeader(
-                title: "Hospitals/Clinics",
-                subtitle: "Find a hospital/clinic near you"),
+                title: "Pharmacies", subtitle: "Find a Pharmacies near you"),
           ],
         ),
       ),
-      body: BlocBuilder<HomeCubit, HomeState>(
+      body: BlocBuilder<PharmaciesCubit, PharmaciesState>(
         builder: (context, state) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: state.isgettingFacilities
+            child: state.isgettingPharmacies
                 ? const Center(
                     child: CircularProgressIndicator(),
                   )
-                : state.facilities.isEmpty
+                : state.pharmacies.isEmpty
                     ? const SizedBox(
                         width: double.infinity,
                         height: 400,
@@ -72,11 +71,10 @@ class HospitalsCrinicsScreen extends StatelessWidget {
                         ),
                       )
                     : ListView.builder(
-                        itemCount: state.facilities.length,
+                        itemCount: state.pharmacies.length,
                         shrinkWrap: true,
-                        itemBuilder: (context, index) =>
-                            HospitalClinicItemWidget(
-                              facility: state.facilities[index],
+                        itemBuilder: (context, index) => PharmacyItemWidget(
+                              pharmacy: state.pharmacies[index],
                             )),
           );
         },

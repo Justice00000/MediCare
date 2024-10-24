@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_care/presentation/screens/hospitals_clinics/cubit/home_cubit.dart';
 import 'package:media_care/presentation/screens/hospitals_clinics/hospitals_crinics_screen.dart';
 import 'package:media_care/presentation/screens/main_screen.dart';
+import 'package:media_care/presentation/screens/pharmacies/cubit/pharmacies_cubit.dart';
+import 'package:media_care/presentation/screens/pharmacies/pharmacies_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +20,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => HomeCubit()),
+        BlocProvider(create: (context) => PharmaciesCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -30,6 +33,7 @@ class MyApp extends StatelessWidget {
           MainScreen.routeName: (context) => const MainScreen(),
           HospitalsCrinicsScreen.routeName: (context) =>
               const HospitalsCrinicsScreen(),
+          PharmaciesScreen.routeName: (context) => const PharmaciesScreen(),
         },
       ),
     );

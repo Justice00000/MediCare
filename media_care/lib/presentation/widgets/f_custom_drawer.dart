@@ -3,11 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_care/core/colors.dart';
 import 'package:media_care/models/location.dart';
 import 'package:media_care/presentation/screens/hospitals_clinics/cubit/home_cubit.dart';
+import 'package:media_care/presentation/screens/pharmacies/cubit/pharmacies_cubit.dart';
 import 'package:media_care/presentation/widgets/custom_line_progress_bar.dart';
 
-class CustomDrawer extends StatelessWidget {
+class FCustomDrawer extends StatelessWidget {
   final String title;
-  const CustomDrawer({required this.title, super.key});
+  const FCustomDrawer({required this.title, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,7 @@ class CustomDrawer extends StatelessWidget {
                     itemBuilder: (context, index) => GestureDetector(
                           onTap: () {
                             Navigator.of(context).pop();
-                            context.read<HomeCubit>().filterByLocation(
+                            context.read<PharmaciesCubit>().filterByLocation(
                                 location: FacilityLocation.locations[index]);
                           },
                           child: Material(
@@ -108,7 +109,7 @@ class CustomDrawer extends StatelessWidget {
                     itemBuilder: (context, index) => GestureDetector(
                           onTap: () {
                             Navigator.of(context).pop();
-                            context.read<HomeCubit>().filterByLocation(
+                            context.read<PharmaciesCubit>().filterByLocation(
                                 location: FacilityLocation.locations[3]);
                           },
                           child: Material(

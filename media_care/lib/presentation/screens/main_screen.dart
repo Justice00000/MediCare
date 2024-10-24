@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:media_care/presentation/screens/hospitals_clinics/hospitals_crinics_screen.dart';
+import 'package:media_care/presentation/screens/pharmacies/pharmacies_screen.dart';
 
 class MainScreen extends StatelessWidget {
   static const routeName = "/";
@@ -23,7 +24,11 @@ class MainScreen extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            ElevatedButton(onPressed: () {}, child: const Text("Pharmacies"))
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed(PharmaciesScreen.routeName);
+                },
+                child: const Text("Pharmacies"))
           ],
         ),
       ),

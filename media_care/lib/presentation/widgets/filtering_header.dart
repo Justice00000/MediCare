@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class FilteringHeader extends StatelessWidget {
-  const FilteringHeader({super.key});
+  final String title;
+  final String subtitle;
+  const FilteringHeader(
+      {required this.title, required this.subtitle, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,14 +14,15 @@ class FilteringHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Hospitals/Clinics",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
+                title,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
               ),
-              Text("Find a hospital/clinic near you"),
+              Text(subtitle),
             ],
           ),
           Row(
