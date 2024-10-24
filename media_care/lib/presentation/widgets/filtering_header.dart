@@ -5,13 +5,13 @@ class FilteringHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
+          const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
@@ -23,15 +23,17 @@ class FilteringHeader extends StatelessWidget {
           ),
           Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.search,
                 size: 35,
                 color: Color.fromARGB(255, 255, 224, 130),
               ),
-              Icon(
-                size: 35,
-                Icons.tune,
-                color: Color.fromARGB(255, 255, 224, 130),
+              IconButton(
+                onPressed: () {
+                  Scaffold.of(context).openEndDrawer();
+                },
+                icon: const Icon(size: 35, Icons.tune),
+                color: const Color.fromARGB(255, 255, 224, 130),
               )
             ],
           ),

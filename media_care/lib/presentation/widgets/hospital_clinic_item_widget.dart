@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:media_care/models/hospital_clinic.dart';
 
 class HospitalClinicItemWidget extends StatelessWidget {
-  const HospitalClinicItemWidget({super.key});
+  final Facility facility;
+  const HospitalClinicItemWidget({required this.facility, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class HospitalClinicItemWidget extends StatelessWidget {
                   height: 130,
                   width: 160,
                   child: Image.network(
-                    "https://legacyclinics.rw/IMG/arton49.jpg?1716038892",
+                    facility.image,
                     fit: BoxFit.cover,
                   )),
               Padding(
@@ -30,25 +32,29 @@ class HospitalClinicItemWidget extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "St Annes Hospital",
-                          style: TextStyle(
+                          facility.name,
+                          style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 16),
                         ),
-                        Text("Lesotho"),
-                        SizedBox(
+                        Text(facility.location),
+                        const SizedBox(
                           height: 20,
                         ),
                         Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.star,
                               color: Colors.yellow,
                             ),
-                            Text("4.8 (234 Reviews)"),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                                "${facility.rating} (${facility.reviews} Reviews)"),
                           ],
                         ),
                       ],
