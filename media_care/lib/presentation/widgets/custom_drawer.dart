@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_care/core/colors.dart';
 import 'package:media_care/models/location.dart';
-import 'package:media_care/presentation/screens/home/cubit/home_cubit.dart';
+import 'package:media_care/presentation/screens/hospitals_clinics/cubit/home_cubit.dart';
 import 'package:media_care/presentation/widgets/custom_line_progress_bar.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -58,7 +58,7 @@ class CustomDrawer extends StatelessWidget {
                               decoration: BoxDecoration(
                                   color:
                                       FacilityLocation.locations[index].name ==
-                                              state.selectedLocation!.name
+                                              state.selectedLocation.name
                                           ? MediCareColors.greenColor
                                           : Colors.white,
                                   borderRadius: BorderRadius.circular(10)),

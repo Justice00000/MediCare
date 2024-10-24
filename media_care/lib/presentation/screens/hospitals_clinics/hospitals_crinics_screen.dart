@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:media_care/presentation/screens/home/cubit/home_cubit.dart';
+import 'package:media_care/presentation/screens/hospitals_clinics/cubit/home_cubit.dart';
 import 'package:media_care/presentation/widgets/custom_drawer.dart';
 import 'package:media_care/presentation/widgets/filtering_header.dart';
 import 'package:media_care/presentation/widgets/hospital_clinic_item_widget.dart';
 
-class HomeScreen extends StatelessWidget {
-  static const routeName = "/";
-  const HomeScreen({super.key});
+class HospitalsCrinicsScreen extends StatelessWidget {
+  static const routeName = "/hospitals_clinics";
+  const HospitalsCrinicsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,11 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           children: [
             AppBar(
-              leading: null,
+              leading: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(Icons.arrow_back_ios_new)),
               automaticallyImplyLeading: false,
               centerTitle: true,
               actions: <Widget>[Container()],

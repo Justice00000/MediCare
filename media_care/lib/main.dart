@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:media_care/presentation/screens/home/cubit/home_cubit.dart';
-import 'package:media_care/presentation/screens/home/home_screen.dart';
+import 'package:media_care/presentation/screens/hospitals_clinics/cubit/home_cubit.dart';
+import 'package:media_care/presentation/screens/hospitals_clinics/hospitals_crinics_screen.dart';
+import 'package:media_care/presentation/screens/main_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +27,9 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         routes: {
-          HomeScreen.routeName: (context) => const HomeScreen(),
+          MainScreen.routeName: (context) => const MainScreen(),
+          HospitalsCrinicsScreen.routeName: (context) =>
+              const HospitalsCrinicsScreen(),
         },
       ),
     );

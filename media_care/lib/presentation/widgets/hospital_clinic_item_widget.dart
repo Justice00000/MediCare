@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_care/core/colors.dart';
 import 'package:media_care/models/hospital_clinic.dart';
-import 'package:media_care/presentation/screens/home/cubit/home_cubit.dart';
+import 'package:media_care/presentation/screens/hospitals_clinics/cubit/home_cubit.dart';
 
 class HospitalClinicItemWidget extends StatelessWidget {
   final Facility facility;
