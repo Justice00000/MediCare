@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'otp_verification.dart'; // Import the OTP Verification screen
 import 'login.dart';
-import 'profile.dart'; // Import the Profile screen
+import 'profile.dart'; // Profile screen after Google Sign-In
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
@@ -23,18 +25,59 @@ class SignUpScreen extends StatelessWidget {
     }
 
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      // Register the user with Firebase Authentication
+      final userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
 
-      // Navigate to profile screen on successful registration
+      // Send an email verification link to the user
+      await userCredential.user?.sendEmailVerification();
+
+      // Navigate to OTP Verification Screen
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const ProfileScreen()),
+        MaterialPageRoute(
+          builder: (_) => OtpVerificationScreen(
+            email: _emailController.text.trim(),
+          ),
+        ),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Verification email sent!')),
       );
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(e.message ?? 'Registration failed')),
+      );
+    }
+  }
+
+  Future<void> signInWithGoogle(BuildContext context) async {
+    try {
+      // Trigger the Google Sign-In process
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) {
+        // User canceled the Google Sign-In process
+        return;
+      }
+
+      // Authenticate with Firebase using the Google Sign-In credentials
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Navigate to Profile screen after successful Google Sign-In
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const ProfileScreen()),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Google Sign-In failed: $e')),
       );
     }
   }
@@ -145,7 +188,21 @@ class SignUpScreen extends StatelessWidget {
                 ),
                 child: const Text('Sign Up'),
               ),
+              const SizedBox(height: 20),
 
+              // Google Sign-In Button
+              ElevatedButton.icon(
+                onPressed: () => signInWithGoogle(context),
+                icon: const Icon(Icons.login, color: Colors.white),
+                label: const Text('Sign Up with Google'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                ),
+              ),
               const SizedBox(height: 20),
 
               // Navigate to Log In

@@ -15,13 +15,14 @@ void main() async {
     if (kIsWeb) {
       // Web-specific Firebase initialization
       const firebaseConfig = FirebaseOptions(
-        apiKey: "AIzaSyC548u6Wrl9ICaNr3fklLMjVKUvay7rTSs",
-        authDomain: "medicare-e2d86.firebaseapp.com",
-        projectId: "medicare-e2d86",
-        storageBucket: "medicare-e2d86.appspot.com",
-        messagingSenderId: "972867386906",
-        appId: "1:972867386906:web:4f0992026fabba0eb2dba3",
-        measurementId: "G-TFZFLHGXTG",
+            apiKey: "AIzaSyC548u6Wrl9ICaNr3fklLMjVKUvay7rTSs",
+            authDomain: "medicare-e2d86.firebaseapp.com",
+            projectId: "medicare-e2d86",
+            storageBucket: "medicare-e2d86.firebasestorage.app",
+            messagingSenderId: "972867386906",
+            appId: "1:972867386906:web:a0f095d3878abfd2b2dba3",
+            measurementId: "G-FK3LR5XTFJ"
+
       );
       await Firebase.initializeApp(options: firebaseConfig);
     } else {

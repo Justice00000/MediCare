@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'signup.dart'; // Import the signup page
 import 'forgot_password.dart'; // Import the Forgot Password screen
 import 'profile.dart'; // Assuming this is the post-login screen
@@ -30,6 +31,37 @@ class LoginScreen extends StatelessWidget {
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(e.message ?? 'Login failed')),
+      );
+    }
+  }
+
+  Future<void> signInWithGoogle(BuildContext context) async {
+    try {
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      if (googleUser == null) {
+        // User canceled the sign-in
+        return;
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+      await googleUser.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final UserCredential userCredential =
+      await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Navigate to the profile screen
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const ProfileScreen()),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Google Sign-In failed: $e')),
       );
     }
   }
@@ -100,7 +132,8 @@ class LoginScreen extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const ForgotPasswordScreen()),
+                    MaterialPageRoute(
+                        builder: (_) => const ForgotPasswordScreen()),
                   );
                 },
                 child: const Text(
@@ -115,12 +148,27 @@ class LoginScreen extends StatelessWidget {
                 onPressed: () => signIn(context),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF00A86B),
-                  padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 15),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 100, vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25),
                   ),
                 ),
                 child: const Text('Sign In'),
+              ),
+              const SizedBox(height: 20),
+
+              // Google Sign-In Button
+              ElevatedButton.icon(
+                onPressed: () => signInWithGoogle(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20, vertical: 10),
+                ),
+                icon: const Icon(Icons.login),
+                label: const Text('Sign in with Google'),
               ),
               const SizedBox(height: 20),
 

@@ -1,11 +1,13 @@
-// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'profile.dart'; // Assuming this is the post-verification screen
 
 class OtpVerificationScreen extends StatefulWidget {
-  const OtpVerificationScreen({super.key});
+  final String email; // Email passed from signup
+
+  const OtpVerificationScreen({required this.email, super.key});
 
   @override
   _OtpVerificationScreenState createState() => _OtpVerificationScreenState();
@@ -20,6 +22,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   late Timer _timer;
   int _start = 120; // 2 minutes timer
   double _opacity = 0.0; // Initial opacity
+  bool _isVerifying = false; // For showing loader during OTP verification
 
   @override
   void initState() {
@@ -63,6 +66,62 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
 
+  Future<void> verifyOtp(BuildContext context) async {
+    String enteredOtp = "${otpController1.text}${otpController2.text}${otpController3.text}${otpController4.text}";
+    if (enteredOtp.length < 4) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter the complete OTP')),
+      );
+      return;
+    }
+
+    setState(() {
+      _isVerifying = true;
+    });
+
+    try {
+      // Simulate OTP verification logic
+      // Replace this with your backend API or Firebase OTP logic
+      if (enteredOtp == "1234") { // Dummy OTP for testing
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const ProfileScreen()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Invalid OTP')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Verification failed: $e')),
+      );
+    } finally {
+      setState(() {
+        _isVerifying = false;
+      });
+    }
+  }
+
+  Future<void> resendOtp() async {
+    if (_start > 0) return;
+
+    setState(() {
+      _start = 120; // Reset the timer
+      startTimer();
+    });
+
+    // Replace this with your backend API or Firebase resend logic
+    try {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('OTP resent successfully')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to resend OTP: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,9 +157,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Image placeholder (Replace with actual asset)
               Image.asset(
-                'assets/images/verify_email-removebg-preview 1 (1).png', // Replace with your image path
+                'assets/images/verify_email-removebg-preview.png', // Replace with your image path
                 height: 150,
               ),
               const SizedBox(height: 20),
@@ -112,13 +170,12 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 ),
               ),
               const SizedBox(height: 10),
-              const Text(
-                'Enter the 4-digit code sent via the email *****@gmail.com',
+              Text(
+                'Enter the 4-digit code sent via the email ${widget.email}',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, color: Colors.black54),
+                style: const TextStyle(fontSize: 16, color: Colors.black54),
               ),
               const SizedBox(height: 20),
-              // OTP input fields
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -129,14 +186,12 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 ],
               ),
               const SizedBox(height: 20),
-              // Resend and Timer
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Didn't recieve a code? "),
+                  const Text("Didn't receive a code? "),
                   GestureDetector(
-                    // ignore: avoid_print
-                    onTap: _start == 0 ? () => print('Resend OTP') : null,
+                    onTap: resendOtp,
                     child: Text(
                       'Re-Send',
                       style: TextStyle(
@@ -153,11 +208,10 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 ],
               ),
               const SizedBox(height: 40),
-              // Continue Button
-              ElevatedButton(
-                onPressed: () {
-                  // Handle OTP verification
-                },
+              _isVerifying
+                  ? const CircularProgressIndicator()
+                  : ElevatedButton(
+                onPressed: () => verifyOtp(context),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF00A86B),
                   padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 15),
@@ -177,7 +231,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     );
   }
 
-  // Helper function to build OTP input fields
   Widget _otpTextField(TextEditingController controller) {
     return SizedBox(
       width: 50,
@@ -186,9 +239,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         keyboardType: TextInputType.number,
         textAlign: TextAlign.center,
         maxLength: 1,
-        inputFormatters: [
-          FilteringTextInputFormatter.digitsOnly,
-        ],
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         decoration: InputDecoration(
           counterText: '',
           enabledBorder: OutlineInputBorder(
