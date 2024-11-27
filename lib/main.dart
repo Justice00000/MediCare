@@ -1,4 +1,6 @@
-// ignore_for_file: unused_field
+// lib/main.dart
+
+// ignore_for_file: unused_import
 
 import 'dart:async';
 import 'package:flutter/foundation.dart'; // For checking web platform
@@ -36,6 +38,17 @@ void main() async {
   }
 
   runApp(const MyApp());
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:medicare/custom_bottom_nav_bar.dart';
+import 'package:medicare/splash_screen.dart';
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(const MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -43,7 +56,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
     );
@@ -204,7 +217,12 @@ class WelcomeScreen extends StatelessWidget {
             ),
           ],
         ),
+      title: 'MediCare',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.white,
       ),
+      home: const SplashScreen(),
     );
   }
 }

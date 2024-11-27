@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'custom_bottom_nav_bar.dart'; // Import CustomBottomNavBar
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -226,7 +227,13 @@ class ProfileScreen extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    // Handle save action
+                    // Navigate to CustomBottomNavBar
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CustomBottomNavBar(),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF00A86B),
