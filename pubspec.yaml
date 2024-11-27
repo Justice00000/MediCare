@@ -1,5 +1,5 @@
 name: medicare
-description: "Your Health Partner"
+description: "Your Health Partner - An app to connect health experts with patients for seamless healthcare solutions."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -10,10 +10,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
 # In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
-# Read more about iOS versioning at
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
 version: 1.0.0+1
@@ -30,9 +27,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  firebase_core: ^2.32.0
+  firebase_auth: ^4.7.2
+  cloud_firestore: ^4.10.1
+  firebase_messaging: ^14.3.0
 
-
-  # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
 
@@ -59,11 +58,11 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-    - assets/images/doctor.png
-    - assets\images\verify_email-removebg-preview 1.png
-    - assets\images\verify_email-removebg-preview 1 (1).png
-    - assets\images\profile picture of person in glasses and orange shirt.png
+  # assets:
+    # - assets/images/doctor.png
+    # - assets/images/verify_email_removebg_preview_1.png
+    # - assets/images/verify_email_removebg_preview_1_1.png
+    # - assets/images/profile_picture_of_person_in_glasses_and_orange_shirt.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

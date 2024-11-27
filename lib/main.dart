@@ -2,9 +2,18 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:medicare/signup.dart';
 
-void main() {
+void main() async {
+  // Ensure Flutter bindings are initialized and Firebase is ready
+  WidgetsFlutterBinding.ensureInitialized();
+  try {
+    await Firebase.initializeApp();
+    print("🔥 Firebase initialized successfully");
+  } catch (e) {
+    print("❌ Firebase initialization failed: $e");
+  }
   runApp(const MyApp());
 }
 
@@ -166,7 +175,7 @@ class WelcomeScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const SignUpScreen()),
+                  MaterialPageRoute(builder: (_) => SignUpScreen()),
                 );
               },
               style: ElevatedButton.styleFrom(
