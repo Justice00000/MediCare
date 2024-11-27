@@ -1,19 +1,39 @@
 // ignore_for_file: unused_field
 
 import 'dart:async';
+import 'package:flutter/foundation.dart'; // For checking web platform
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core_web/firebase_core_web.dart'; // Required for web
 import 'package:medicare/signup.dart';
 
 void main() async {
-  // Ensure Flutter bindings are initialized and Firebase is ready
+  // Ensure Flutter bindings are initialized
   WidgetsFlutterBinding.ensureInitialized();
+
   try {
-    await Firebase.initializeApp();
+    if (kIsWeb) {
+      // Web-specific Firebase initialization
+      const firebaseConfig = FirebaseOptions(
+        apiKey: "AIzaSyC548u6Wrl9ICaNr3fklLMjVKUvay7rTSs",
+        authDomain: "medicare-e2d86.firebaseapp.com",
+        projectId: "medicare-e2d86",
+        storageBucket: "medicare-e2d86.appspot.com",
+        messagingSenderId: "972867386906",
+        appId: "1:972867386906:web:4f0992026fabba0eb2dba3",
+        measurementId: "G-TFZFLHGXTG",
+      );
+      await Firebase.initializeApp(options: firebaseConfig);
+    } else {
+      // Default Firebase initialization for Android/iOS
+      await Firebase.initializeApp();
+    }
+
     print("🔥 Firebase initialized successfully");
   } catch (e) {
     print("❌ Firebase initialization failed: $e");
   }
+
   runApp(const MyApp());
 }
 
@@ -33,7 +53,6 @@ class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _SplashScreenState createState() => _SplashScreenState();
 }
 
@@ -50,13 +69,11 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
 
-    // Initialize the animation controller
     _controller = AnimationController(
       vsync: this,
       duration: animationDuration,
     );
 
-    // Fade and Scale animation
     _fadeAnimation = CurvedAnimation(
       parent: _controller,
       curve: Curves.easeInOut,
@@ -69,35 +86,33 @@ class _SplashScreenState extends State<SplashScreen>
       ),
     );
 
-    // Start the animation (fade-in and scale-up)
     _controller.forward();
 
-    // After animation is completed, reverse it for fade-out
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        // Wait for 1 second before starting fade-out
         Future.delayed(const Duration(seconds: 1), () {
-          _controller.reverse(); // Start fade-out
+          _controller.reverse();
         });
       } else if (status == AnimationStatus.dismissed) {
-        // Once fade-out is completed, navigate to the next screen
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const WelcomeScreen()),
-        );
+        if (mounted) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => const WelcomeScreen()),
+          );
+        }
       }
     });
   }
 
   @override
   void dispose() {
-    _controller.dispose(); // Dispose the controller to prevent memory leaks
+    _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF00A86B), // Green background
+      backgroundColor: const Color(0xFF00A86B),
       body: Center(
         child: AnimatedBuilder(
           animation: _fadeAnimation,
@@ -139,7 +154,6 @@ class _SplashScreenState extends State<SplashScreen>
   }
 }
 
-// Define the Welcome Screen
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 

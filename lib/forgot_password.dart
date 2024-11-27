@@ -30,7 +30,7 @@ class ForgotPasswordScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/images/verify_email-removebg-preview 1.png', // Add your image asset here
+              'assets/images/verify_email-removebg-preview.png', // Add your image asset here
               height: 150,
             ),
             const SizedBox(height: 20),
