@@ -58,7 +58,7 @@ class ProfileScreen extends StatelessWidget {
                       backgroundColor: Colors.grey[200],
                       child: ClipOval(
                         child: Image.asset(
-                          'assets/images/profile picture of person in glasses and orange shirt.png', // Placeholder image
+                          'assets/images/profilepicture.png', // Placeholder image
                           width: 90,
                           height: 90,
                           fit: BoxFit.cover,
