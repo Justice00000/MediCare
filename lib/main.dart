@@ -1,50 +1,42 @@
-// lib/main.dart
-
-// ignore_for_file: unused_import
+// ignore_for_file: unused_import, library_private_types_in_public_api, depend_on_referenced_packages
 
 import 'dart:async';
 import 'package:flutter/foundation.dart'; // For checking web platform
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_core_web/firebase_core_web.dart'; // Required for web
+import 'package:flutter/services.dart';
+import 'package:firebase_core/firebase_core.dart'; // Required for web
 import 'package:medicare/signup.dart';
 
 void main() async {
   // Ensure Flutter bindings are initialized
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Firebase initialization
   try {
     if (kIsWeb) {
-      // Web-specific Firebase initialization
       const firebaseConfig = FirebaseOptions(
-            apiKey: "AIzaSyC548u6Wrl9ICaNr3fklLMjVKUvay7rTSs",
-            authDomain: "medicare-e2d86.firebaseapp.com",
-            projectId: "medicare-e2d86",
-            storageBucket: "medicare-e2d86.firebasestorage.app",
-            messagingSenderId: "972867386906",
-            appId: "1:972867386906:web:a0f095d3878abfd2b2dba3",
-            measurementId: "G-FK3LR5XTFJ"
-
+        apiKey: "AIzaSyC548u6Wrl9ICaNr3fklLMjVKUvay7rTSs",
+        authDomain: "medicare-e2d86.firebaseapp.com",
+        projectId: "medicare-e2d86",
+        storageBucket: "medicare-e2d86.appspot.com",
+        messagingSenderId: "972867386906",
+        appId: "1:972867386906:web:a0f095d3878abfd2b2dba3",
+        measurementId: "G-FK3LR5XTFJ",
       );
       await Firebase.initializeApp(options: firebaseConfig);
     } else {
-      // Default Firebase initialization for Android/iOS
       await Firebase.initializeApp();
     }
 
-    print("🔥 Firebase initialized successfully");
+    if (kDebugMode) {
+      print("🔥 Firebase initialized successfully");
+    }
   } catch (e) {
-    print("❌ Firebase initialization failed: $e");
+    if (kDebugMode) {
+      print("❌ Firebase initialization failed: $e");
+    }
   }
 
-  runApp(const MyApp());
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:medicare/custom_bottom_nav_bar.dart';
-import 'package:medicare/splash_screen.dart';
-
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
     runApp(const MyApp());
@@ -58,7 +50,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: const SplashScreen(),
     );
   }
 }
@@ -72,10 +64,8 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _fadeAnimation;
-  late Animation<double> _scaleAnimation;
-
+  late AnimationController controller;
+  late Animation<double> fadeAnimation;
   final String text = "MEDICARE++";
   final Duration animationDuration = const Duration(seconds: 4);
 
@@ -83,43 +73,28 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
 
-    _controller = AnimationController(
+    controller = AnimationController(
       vsync: this,
       duration: animationDuration,
     );
 
-    _fadeAnimation = CurvedAnimation(
-      parent: _controller,
+    fadeAnimation = CurvedAnimation(
+      parent: controller,
       curve: Curves.easeInOut,
     );
 
-    _scaleAnimation = Tween<double>(begin: 0.8, end: 1.2).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeInOut,
-      ),
-    );
-
-    _controller.forward();
-
-    _controller.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        Future.delayed(const Duration(seconds: 1), () {
-          _controller.reverse();
-        });
-      } else if (status == AnimationStatus.dismissed) {
-        if (mounted) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => const WelcomeScreen()),
-          );
-        }
+    controller.forward().then((_) {
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const WelcomeScreen()),
+        );
       }
     });
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -129,37 +104,15 @@ class _SplashScreenState extends State<SplashScreen>
       backgroundColor: const Color(0xFF00A86B),
       body: Center(
         child: AnimatedBuilder(
-          animation: _fadeAnimation,
+          animation: fadeAnimation,
           builder: (context, child) {
-            return Row(
-              mainAxisSize: MainAxisSize.min,
-              children: List.generate(text.length, (index) {
-                final delay = index / text.length;
-                final letterAnimation = CurvedAnimation(
-                  parent: _fadeAnimation,
-                  curve: Interval(delay, 1.0, curve: Curves.easeInOut),
-                );
-
-                return FadeTransition(
-                  opacity: letterAnimation,
-                  child: ScaleTransition(
-                    scale: letterAnimation.drive(
-                      Tween<double>(begin: 0.5, end: 1.0),
-                    ),
-                    child: Transform.translate(
-                      offset: Offset(0, -30 * (1 - letterAnimation.value)),
-                      child: Text(
-                        text[index],
-                        style: const TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              }),
+            return Text(
+              text,
+              style: const TextStyle(
+                fontSize: 40,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             );
           },
         ),
@@ -217,12 +170,7 @@ class WelcomeScreen extends StatelessWidget {
             ),
           ],
         ),
-      title: 'MediCare',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.white,
       ),
-      home: const SplashScreen(),
     );
   }
 }

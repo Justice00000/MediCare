@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'profile.dart'; // Assuming this is the post-verification screen
 
 class OtpVerificationScreen extends StatefulWidget {
