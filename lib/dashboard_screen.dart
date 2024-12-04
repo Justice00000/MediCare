@@ -1,12 +1,6 @@
-// ignore_for_file: unused_import, library_prefixes
-
 import 'package:flutter/material.dart';
-import 'package:medicare/profile.dart';
-import 'package:medicare/profile_screen.dart' as profileScreenFile;
+import 'package:medicare/profile_screen.dart';
 import 'package:medicare/reminders_screen.dart';
-import 'package:medicare/hospitals_screen.dart'; // Import for HospitalsClinicScreen
-import 'package:medicare/pharmacies_screen.dart'; // Import for PharmaciesScreen
-import 'package:medicare/appointment_screen.dart'; // Import for AppointmentScreen
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -77,7 +71,7 @@ class DashboardScreen extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 30,
-                    backgroundImage: AssetImage("assets/images/avatar1.jpg"),
+                    backgroundImage: AssetImage("assets/avatar1.jpg"),
                   ),
                   SizedBox(height: 10),
                   Text(
@@ -103,9 +97,7 @@ class DashboardScreen extends StatelessWidget {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => const profileScreenFile.ProfileScreen(),
-                  ),
+                  MaterialPageRoute(builder: (context) => ProfileScreen()),
                 );
               },
             ),
@@ -133,7 +125,7 @@ class DashboardScreen extends StatelessWidget {
                 fit: StackFit.expand,
                 children: [
                   Image.asset(
-                    'assets/images/medicarehero.jpg',
+                    'assets/medicarehero.jpg',
                     fit: BoxFit.cover,
                   ),
                   Container(
@@ -162,13 +154,13 @@ class DashboardScreen extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const ProfileScreen(),
+                                      builder: (context) => ProfileScreen(),
                                     ),
                                   );
                                 },
                                 child: const CircleAvatar(
                                   radius: 30,
-                                  backgroundImage: AssetImage("assets/images/avatar1.jpg"),
+                                  backgroundImage: AssetImage("assets/avatar1.jpg"),
                                 ),
                               ),
                               const SizedBox(width: 10),
@@ -255,29 +247,14 @@ class DashboardScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 24),
-                    _buildSectionHeader("Appointments", () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const AppointmentsScreen()),
-                      );
-                    }),
+                    _buildSectionHeader("Appointments", () {}),
                     const AppointmentCard(),
                     const SizedBox(height: 24),
-                    _buildSectionHeader("Facilities", () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const HospitalsClinicScreen()),
-                      );
-                    }),
+                    _buildSectionHeader("Facilities", () {}),
                     const SizedBox(height: 16),
                     const FacilityList(),
                     const SizedBox(height: 24),
-                    _buildSectionHeader("Pharmacies", () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const PharmaciesScreen()),
-                      );
-                    }),
+                    _buildSectionHeader("Pharmacies", () {}),
                     const SizedBox(height: 16),
                     const PharmacyList(),
                     const SizedBox(height: 16),
@@ -360,9 +337,8 @@ class AppointmentCard extends StatelessWidget {
       child: const ListTile(
         contentPadding: EdgeInsets.all(12),
         leading: CircleAvatar(
-          radius: 25
-,
-          backgroundImage: AssetImage('assets/images/doctor.jpg'),
+          radius: 25,
+          backgroundImage: AssetImage('assets/doctor.jpg'),
         ),
         title: Text(
           "Dr. Henry Kamoiya",
@@ -380,80 +356,77 @@ class FacilityList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            FacilityCard(
-              name: "City Hospital",
-              imageUrl: "assets/images/hospital1.jpg",
-            ),
-            FacilityCard(
-              name: "Downtown Clinic",
-              imageUrl: "assets/images/hospital2.jpg",
-            ),
-          ],
-        ),
-        SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            FacilityCard(
-              name: "Health Center",
-              imageUrl: "assets/images/hospital1.jpg",
-            ),
-            FacilityCard(
-              name: "Suburban Clinic",
-              imageUrl: "assets/images/hospital2.jpg",
-            ),
-          ],
-        ),
-      ],
+    return SizedBox(
+      height: 120,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: const [
+          FacilityCard(
+            image: 'assets/hospital1.jpg',
+            name: 'St Annes Hospital',
+          ),
+          SizedBox(width: 12),
+          FacilityCard(
+            image: 'assets/hospital2.jpg',
+            name: 'Moyo Clinic',
+          ),
+        ],
+      ),
     );
   }
 }
 
 class FacilityCard extends StatelessWidget {
+  final String image;
   final String name;
-  final String imageUrl;
 
   const FacilityCard({
     super.key,
+    required this.image,
     required this.name,
-    required this.imageUrl,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 150,
-      height: 150,
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-              child: Image.asset(
-                imageUrl,
-                height: 100,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
+    return Container(
+      width: 160,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 6,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+            child: Image.asset(
+              image,
+              width: 160,
+              height: 80,
+              fit: BoxFit.cover,
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                name,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              name,
+              style: const TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
               ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -464,84 +437,77 @@ class PharmacyList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            PharmacyCard(
-              name: "Community Pharmacy",
-              imageUrl: "assets/images/pharmacy1.jpg",
-            ),
-            PharmacyCard(
-              name: "Wellness Pharmacy",
-              imageUrl: "assets/images/pharmacy2.jpg",
-            ),
-          ],
-        ),
-        SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            PharmacyCard(
-              name: "Express Pharmacy",
-              imageUrl: "assets/images/pharmacy1.jpg",
-            ),
-            PharmacyCard(
-              name: "MedPlus",
-              imageUrl: "assets/images/pharmacy2.jpg",
-            ),
-          ],
-        ),
-      ],
+    return SizedBox(
+      height: 120,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: const [
+          PharmacyCard(
+            image: 'assets/pharmacy1.jpg',
+            name: 'CareFirst Pharmacy',
+          ),
+          SizedBox(width: 12),
+          PharmacyCard(
+            image: 'assets/pharmacy2.jpg',
+            name: 'HealthPlus Pharmacy',
+          ),
+        ],
+      ),
     );
   }
 }
 
 class PharmacyCard extends StatelessWidget {
+  final String image;
   final String name;
-  final String imageUrl;
 
   const PharmacyCard({
     super.key,
+    required this.image,
     required this.name,
-    required this.imageUrl,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 150,
-      height: 160, // Increased height to provide more space
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-              child: Image.asset(
-                imageUrl,
-                height: 100,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
+    return Container(
+      width: 160,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 6,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+            child: Image.asset(
+              image,
+              width: 160,
+              height: 80,
+              fit: BoxFit.cover,
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                name,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14, // Adjust font size if necessary
-                ),
-                overflow: TextOverflow.ellipsis, // Prevent text overflow
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              name,
+              style: const TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
               ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
